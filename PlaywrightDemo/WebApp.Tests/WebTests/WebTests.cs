@@ -9,8 +9,6 @@ namespace WebApp.Tests.WebTests;
 
 public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<WebAppFixture>
 {
-	private readonly TimeSpan _defaultTimeout = TimeSpan.FromSeconds(15);
-
     [Fact]
     public async Task HasTitle()
     {
