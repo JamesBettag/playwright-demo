@@ -30,7 +30,9 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
 			
 			i++;
         } while (i <= 5);
-    }
+
+        await Expect(Page.GetByRole(AriaRole.Status)).ToHaveTextAsync($"Current count: {i}");
+	}
 
     [Fact]
     public async Task Weather_HasValidColumns()
