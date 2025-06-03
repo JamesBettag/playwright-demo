@@ -9,7 +9,6 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
     [Fact]
     public async Task Home_HasTitle()
     {
-        // Use Playwright to navigate to the running web app
         await Page.GotoAsync(webAppFixture.Endpoint.ToString());
 
         await Expect(Page).ToHaveTitleAsync("Home");
@@ -18,18 +17,20 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
     [Fact]
     public async Task Counter_Counts()
     {
-	    await Page.GotoAsync(webAppFixture.Endpoint.ToString());
+        await Page.GotoAsync(webAppFixture.Endpoint.ToString());
 
-	    await Page.GetByRole(AriaRole.Link, new() { Name = "Counter" }).ClickAsync();
+        await Page.GetByRole(AriaRole.Link, new() { Name = "Counter" }).ClickAsync();
 
-	    for (var i = 0; i < 5; i++)
-	    {
-		    await Page.ClickAsync("text=Click me");
-		    await Expect(Page.GetByRole(AriaRole.Status)).ToHaveTextAsync($"Current count: {i + 1}");
-		}
-
-		await Expect(Page.GetByRole(AriaRole.Status)).ToHaveTextAsync("Current count: 5");
-	}
+        var i = 0;
+        do
+        {
+            // this will wait until the page has the expected value, or timeout (default 5s)
+	        await Expect(Page.GetByRole(AriaRole.Status)).ToHaveTextAsync($"Current count: {i}");
+			await Page.ClickAsync("text=Click me");
+			
+			i++;
+        } while (i <= 5);
+    }
 
     [Fact]
     public async Task Weather_HasValidColumns()
