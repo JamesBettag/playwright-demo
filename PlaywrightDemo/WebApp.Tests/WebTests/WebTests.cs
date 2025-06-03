@@ -25,7 +25,7 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
 	    for (var i = 0; i < 5; i++)
 	    {
 		    await Page.ClickAsync("text=Click me");
-		    await Page.WaitForTimeoutAsync(100); // Wait 100ms for UI update. Clicking too fast doesn't register.
+		    await Expect(Page.GetByRole(AriaRole.Status)).ToHaveTextAsync($"Current count: {i + 1}");
 		}
 
 		await Expect(Page.GetByRole(AriaRole.Status)).ToHaveTextAsync("Current count: 5");
