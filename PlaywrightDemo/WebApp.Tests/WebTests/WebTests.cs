@@ -4,12 +4,12 @@ using Xunit;
 
 namespace WebApp.Tests.WebTests;
 
-public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<WebAppFixture>
+public class WebTests(AspireFixture aspireFixture) : PageTest, IClassFixture<AspireFixture>
 {
     [Fact]
     public async Task Home_HasTitle()
     {
-        await Page.GotoAsync(webAppFixture.Endpoint.ToString());
+        await Page.GotoAsync(aspireFixture.WebEndpoint.ToString());
 
         await Expect(Page).ToHaveTitleAsync("Home");
     }
@@ -17,7 +17,7 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
     [Fact]
     public async Task Counter_Counts()
     {
-        await Page.GotoAsync(webAppFixture.Endpoint.ToString());
+        await Page.GotoAsync(aspireFixture.WebEndpoint.ToString());
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Counter" }).ClickAsync();
 
@@ -37,7 +37,7 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
     [Fact]
     public async Task Weather_HasValidColumns()
     {
-        await Page.GotoAsync(webAppFixture.Endpoint.ToString());
+        await Page.GotoAsync(aspireFixture.WebEndpoint.ToString());
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Weather" }).ClickAsync();
 
