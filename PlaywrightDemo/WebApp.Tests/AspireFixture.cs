@@ -1,12 +1,13 @@
-﻿using Aspire.Hosting.Testing;
-using Aspire.Hosting;
+﻿using Aspire.Hosting;
+using Aspire.Hosting.Testing;
 using Xunit;
 
-namespace WebApp.Tests.WebTests
+namespace WebApp.Tests
 {
-	public class WebAppFixture : IAsyncLifetime
+	public class AspireFixture : IAsyncLifetime
 	{
-		public Uri Endpoint { get; private set; }
+		public Uri WebEndpoint { get; private set; }
+		public Uri ApiEndpoint { get; private set; }
 		private DistributedApplication? _app;
 
 		public async Task InitializeAsync()
@@ -16,7 +17,8 @@ namespace WebApp.Tests.WebTests
 
 			await _app.StartAsync();
 
-			Endpoint = _app.GetEndpoint("webfrontend");
+			WebEndpoint = _app.GetEndpoint("webfrontend");
+			ApiEndpoint = _app.GetEndpoint("apiservice");
 		}
 
 		public async Task DisposeAsync()

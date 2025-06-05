@@ -4,40 +4,12 @@ using Xunit;
 
 namespace WebApp.Tests.WebTests;
 
-public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<WebAppFixture>, IAsyncLifetime
+public class WebTests(AspireFixture aspireFixture) : PageTest, IClassFixture<AspireFixture>
 {
-    
-    private IBrowser _browser;
-    private IBrowserContext _context;
-    private IPage _page;
-
-    public async Task InitializeAsync()
-    {
-        // Create an instance of Playwright
-        var playwright = await Microsoft.Playwright.Playwright.CreateAsync();
-
-        // Launch the browser in non-headless mode with SlowMo
-        _browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
-        {
-            Headless = false, // Set to false to visualize the browser
-            SlowMo = 3000      // Add a 500ms delay between each action
-        });
-
-        _context = await _browser.NewContextAsync();
-        _page = await _context.NewPageAsync();
-    }
-
-    public async Task DisposeAsync()
-    {
-        await _page.CloseAsync();
-        await _context.CloseAsync();
-        await _browser.CloseAsync();
-    }
-    
     [Fact]
     public async Task Home_HasTitle()
     {
-        await Page.GotoAsync(webAppFixture.Endpoint.ToString());
+        await Page.GotoAsync(aspireFixture.WebEndpoint.ToString());
 
         await Expect(Page).ToHaveTitleAsync("Home");
     }
@@ -45,7 +17,7 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
     [Fact]
     public async Task Counter_Counts()
     {
-        await Page.GotoAsync(webAppFixture.Endpoint.ToString());
+        await Page.GotoAsync(aspireFixture.WebEndpoint.ToString());
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Counter" }).ClickAsync();
 
@@ -65,7 +37,7 @@ public class WebTests(WebAppFixture webAppFixture) : PageTest, IClassFixture<Web
     [Fact]
     public async Task Weather_HasValidColumns()
     {
-        await Page.GotoAsync(webAppFixture.Endpoint.ToString());
+        await Page.GotoAsync(aspireFixture.WebEndpoint.ToString());
 
         await Page.GetByRole(AriaRole.Link, new() { Name = "Weather" }).ClickAsync();
 
